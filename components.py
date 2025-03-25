@@ -20,7 +20,7 @@ def display_app_title():
     """
     st.markdown(f"## {ct.APP_NAME}")
 
-def sidebar():
+def sidebar_main():
     """
     サイドバー表示
     """
