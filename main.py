@@ -57,8 +57,9 @@ if not "initialized" in st.session_state:
 # 4. 初期表示
 ############################################################
 # サイドバーにモード表示とヘルプを表示
-st.sidebar.cn.display_select_mode()
-st.sidebar.cn.display_input_helper_text()
+with st.sidebar:
+    cn.display_select_mode()
+    cn.display_input_helper_text()
 # タイトル表示
 cn.display_app_title()
 """
