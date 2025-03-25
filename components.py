@@ -20,6 +20,16 @@ def display_app_title():
     """
     st.markdown(f"## {ct.APP_NAME}")
 
+def sidebar():
+    """
+    サイドバー表示
+    """
+    # サイドバーのタイトル表示
+    sidebar_title()
+    # 回答モードのラジオボタンを表示
+    display_select_mode()
+    # ヘルプ表示
+    display_input_hepler_text()
 
 def sidebar_title():
     """
