@@ -57,7 +57,7 @@ if not "initialized" in st.session_state:
 # 4. 初期表示
 ############################################################
 # サイドバーにモード表示とヘルプを表示
-cn.sidebar_main()
+cn.sidebar_title()
 
 # タイトル表示
 cn.display_app_title()
