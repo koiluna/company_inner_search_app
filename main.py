@@ -63,7 +63,7 @@ cn.display_app_title()
 # AIメッセージの初期表示
 cn.display_initial_ai_message()
 
-# サイドバーにモード表示とヘルプを表示
+# サイドバーの表示
 cn.display_sidebar()
 
 ############################################################
