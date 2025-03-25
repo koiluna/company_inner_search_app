@@ -56,10 +56,6 @@ if not "initialized" in st.session_state:
 ############################################################
 # 4. 初期表示
 ############################################################
-# サイドバーにモード表示とヘルプを表示
-cn.sidebar_title()
-cn.display_select_mode()
-cn.display_input_helper_text()
 
 # タイトル表示
 cn.display_app_title()
@@ -67,6 +63,8 @@ cn.display_app_title()
 # AIメッセージの初期表示
 cn.display_initial_ai_message()
 
+# サイドバーにモード表示とヘルプを表示
+cn.display_sidebar()
 
 ############################################################
 # 5. 会話ログの表示
