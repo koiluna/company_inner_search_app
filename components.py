@@ -25,7 +25,7 @@ def sidebar_title():
     """
     サイドバーのタイトル表示
     """
-    st.sidebar.markdown(f"## {ct.APP_PURPOSE}")
+    st.markdown(f"## {ct.APP_PURPOSE}")
 
 def display_select_mode():
     """
