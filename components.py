@@ -20,6 +20,7 @@ def display_app_title():
     """
     st.markdown(f"## {ct.APP_NAME}")
 
+"""
 def sidebar_main():
     """
     サイドバー表示
@@ -30,6 +31,7 @@ def sidebar_main():
     display_select_mode()
     # ヘルプ表示
     display_input_hepler_text()
+"""
 
 def sidebar_title():
     """
