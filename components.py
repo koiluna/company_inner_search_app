@@ -22,9 +22,6 @@ def display_app_title():
 
 """
 def sidebar_main():
-    """
-    サイドバー表示
-    """
     # サイドバーのタイトル表示
     sidebar_title()
     # 回答モードのラジオボタンを表示
