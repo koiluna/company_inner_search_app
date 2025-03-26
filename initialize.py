@@ -19,7 +19,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import constants as ct
-from langchain.schema import Document
+from docx import Document
 import csv
 
 ############################################################
@@ -220,7 +220,7 @@ def file_load(path, docs_all):
         docs = loader.load()
         # CSVファイルの場合、各行を個別のドキュメントとして認識
         if file_extension == ".csv":
-            doc =""
+            doc = ""
             for row in docs:
                 page_content = row.page_content
                 data_list = page_content.split("\n")
