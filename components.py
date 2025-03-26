@@ -26,7 +26,7 @@ def display_sidebar():
     """
     with st.sidebar:
         # サイドバーのタイトル表示
-        st.markdown(f"## {ct.APP_PURPOSE}")
+        st.markdown("## 利用目的")
         # 回答モードのラジオボタンを表示
         col1, col2 = st.columns([100, 1])
         with col1:
@@ -56,7 +56,7 @@ def display_initial_ai_message():
     """
     with st.chat_message("assistant"):
         # 「st.success()」とすると緑枠で表示される
-        st.markdown("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。上記で利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
+        st.success("こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。上記で利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。")
 
 def display_conversation_log():
     """
