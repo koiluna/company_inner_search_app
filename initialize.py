@@ -19,6 +19,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import constants as ct
+from langchain.schema import Document
 
 
 ############################################################
@@ -218,7 +219,7 @@ def file_load(path, docs_all):
         loader = ct.SUPPORTED_EXTENSIONS[file_extension](path)
         docs = loader.load()
         # CSVファイルの場合、各行が分割されたドキュメントになっているため、結合する
-        if file_extension ==".csv":
+        if file_extension == ".csv":
             combined_content = ""
             for doc in docs:
                 combined_content += doc.page_content + "\n"
