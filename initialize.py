@@ -217,7 +217,16 @@ def file_load(path, docs_all):
         # ファイルの拡張子に合ったdata loaderを使ってデータ読み込み
         loader = ct.SUPPORTED_EXTENSIONS[file_extension](path)
         docs = loader.load()
-        docs_all.extend(docs)
+        # CSVファイルの場合、各行が分割されたドキュメントになっているため、結合する
+        if file_extension ==".csv":
+            combined_content = ""
+            for doc in docs:
+                combined_content += doc.page_content + "\n"
+            # 結合した内容で新しいドキュメントを作成
+            combined_doc = Document(page_content=combined_content, metadata={"source": path})
+            docs_all.append(combined_doc)
+        else:
+            docs_all.extend(docs)
 
 
 def adjust_string(s):
