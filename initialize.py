@@ -220,6 +220,13 @@ def file_load(path, docs_all):
         docs = loader.load()
         # CSVファイルの場合、各行を個別のドキュメントとして認識
         if file_extension == ".csv":
+            with open(path, 'r', encoding='utf-8') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    metadata = {"source": path}
+                    metadata.update(row)
+                    new_doc = Document(page_content="", metadata=metadata)
+                    docs_all.append(new_doc)
             for doc in docs:
                 # 各行を個別のドキュメントとして追加
                 row_doc = Document(page_content=doc.page_content, metadata={"source": path})
