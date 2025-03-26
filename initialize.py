@@ -20,7 +20,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import constants as ct
 from langchain.schema import Document
-
+import csv
 
 ############################################################
 # 設定関連
@@ -224,8 +224,8 @@ def file_load(path, docs_all):
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     metadata = {"source": path}
-                    metadata.update(row)
-                    new_doc = Document(page_content="", metadata=metadata)
+                    page_content = ", ".join([f"{key}: {value}" for key, value in row.items()])
+                    new_doc = Document(page_content=page_content, metadata=metadata)
                     docs_all.append(new_doc)
         else:
             docs_all.extend(docs)
