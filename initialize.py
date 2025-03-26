@@ -227,10 +227,6 @@ def file_load(path, docs_all):
                     metadata.update(row)
                     new_doc = Document(page_content="", metadata=metadata)
                     docs_all.append(new_doc)
-            for doc in docs:
-                # 各行を個別のドキュメントとして追加
-                row_doc = Document(page_content=doc.page_content, metadata={"source": path})
-                docs_all.append(row_doc)
         else:
             docs_all.extend(docs)
 
