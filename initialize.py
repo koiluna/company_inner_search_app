@@ -231,10 +231,8 @@ def file_load(path, docs_all, docs_csv):
         if file_extension == ".csv":
             doc = ""
             for row in docs:
-                page_content = row.page_content
-                value_list = page_content.split("\n")
-                row_data = "\n".join(value_list)
-                doc += row_data + "\n======\n"
+                row_data = row.page_content
+                doc += row_data + "\n----\n"
             new_doc = Document()
             new_doc.page_content = doc
             new_doc.metadata = {"source": path}
