@@ -181,7 +181,7 @@ def load_data_sources():
     # 通常読み込みのデータソースにWebページのデータを追加
     docs_all.extend(web_docs_all)
 
-    return docs_all
+    return docs_all, docs_csv
 
 
 def recursive_file_check(path, docs_all, docs_csv):
