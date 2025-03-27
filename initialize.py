@@ -232,11 +232,11 @@ def file_load(path, docs_all, docs_csv):
             doc = ""
             for row in docs:
                 row_data = row.page_content
-                doc += row_data + "\n----\n"
-            new_doc = Document()
-            new_doc.page_content = doc
-            new_doc.metadata = {"source": path}
-            docs_csv.append(new_doc)
+                doc += row_data + "\n=====\n"
+            custom_doc = Document()
+            custom_doc.page_content = doc
+            custom_doc.metadata = {"source": path}
+            docs_csv.append(custom_doc)
         else:
             docs_all.extend(docs)
 
