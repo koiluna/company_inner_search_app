@@ -229,9 +229,16 @@ def file_load(path, docs_all, docs_csv):
         docs = loader.load()
         # CSVファイルの場合、各行を個別のドキュメントとして認識
         if file_extension == ".csv":
-            for doc in docs:
-                row_doc = Document(page_content=doc.page_content, metadata={"source": path})
-                docs_csv.append(row_doc)
+            doc = ""
+            for row in docs:
+                page_content = row.page_content
+                value_list = page_content.split("\n")
+                row_data = "\n".join(value_list)
+                doc += row_data + "\n======\n"
+            new_doc = Document()
+            new_doc.page_content = doc
+            new_doc.metadata = {"source": path}
+            docs_csv.append(new_doc)
         else:
             docs_all.extend(docs)
 
