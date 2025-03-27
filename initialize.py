@@ -19,7 +19,6 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 import constants as ct
-from docx import Document
 import csv
 
 ############################################################
@@ -111,10 +110,14 @@ def initialize_retriever():
         return
     
     # RAGの参照先となるデータソースの読み込み
-    docs_all = load_data_sources()
+    docs_all, docs_csv = load_data_sources()
 
     # OSがWindowsの場合、Unicode正規化と、cp932（Windows用の文字コード）で表現できない文字を除去
     for doc in docs_all:
+        doc.page_content = adjust_string(doc.page_content)
+        for key in doc.metadata:
+            doc.metadata[key] = adjust_string(doc.metadata[key])
+    for doc in docs_csv:
         doc.page_content = adjust_string(doc.page_content)
         for key in doc.metadata:
             doc.metadata[key] = adjust_string(doc.metadata[key])
@@ -131,6 +134,9 @@ def initialize_retriever():
 
     # チャンク分割を実施
     splitted_docs = text_splitter.split_documents(docs_all)
+
+    # CSVでデータを結合
+    splitted_docs.extend(docs_csv)
 
     # ベクターストアの作成
     db = Chroma.from_documents(splitted_docs, embedding=embeddings)
@@ -159,8 +165,9 @@ def load_data_sources():
     """
     # データソースを格納する用のリスト
     docs_all = []
+    docs_csv = []
     # ファイル読み込みの実行（渡した各リストにデータが格納される）
-    recursive_file_check(ct.RAG_TOP_FOLDER_PATH, docs_all)
+    recursive_file_check(ct.RAG_TOP_FOLDER_PATH, docs_all, docs_csv)
 
     web_docs_all = []
     # ファイルとは別に、指定のWebページ内のデータも読み込み
@@ -177,13 +184,14 @@ def load_data_sources():
     return docs_all
 
 
-def recursive_file_check(path, docs_all):
+def recursive_file_check(path, docs_all, docs_csv):
     """
     RAGの参照先となるデータソースの読み込み
 
     Args:
         path: 読み込み対象のファイル/フォルダのパス
         docs_all: データソースを格納する用のリスト
+        docs_csv: CSVファイルのデータソースを格納する用のリスト
     """
     # パスがフォルダかどうかを確認
     if os.path.isdir(path):
@@ -194,19 +202,20 @@ def recursive_file_check(path, docs_all):
             # ファイル/フォルダ名だけでなく、フルパスを取得
             full_path = os.path.join(path, file)
             # フルパスを渡し、再帰的にファイル読み込みの関数を実行
-            recursive_file_check(full_path, docs_all)
+            recursive_file_check(full_path, docs_all, docs_csv)
     else:
         # パスがファイルの場合、ファイル読み込み
-        file_load(path, docs_all)
+        file_load(path, docs_all, docs_csv)
 
 
-def file_load(path, docs_all):
+def file_load(path, docs_all, docs_csv):
     """
     ファイル内のデータ読み込み
 
     Args:
         path: ファイルパス
         docs_all: データソースを格納する用のリスト
+        docs_csv: CSVファイルのデータソースを格納する用のリスト
     """
     # ファイルの拡張子を取得
     file_extension = os.path.splitext(path)[1]
@@ -220,26 +229,9 @@ def file_load(path, docs_all):
         docs = loader.load()
         # CSVファイルの場合、各行を個別のドキュメントとして認識
         if file_extension == ".csv":
-            doc = ""
-            for row in docs:
-                page_content = row.page_content
-                data_list = page_content.split("\n")
-                row_data = "\n".join(data_list)
-                doc += row_data
-            new_doc = Document()
-            new_doc.page_content = doc
-            new_doc.metadata = {"source": path}
-            docs_all.append(new_doc)
-
-            """
-            with open(path, 'r', encoding='utf-8') as csvfile:
-                reader = csv.DictReader(csvfile)
-                for row in reader:
-                    metadata = {"source": path}
-                    page_content = ", ".join([f"{key}: {value}" for key, value in row.items()])
-                    new_doc = Document(page_content=page_content, metadata=metadata)
-                    docs_all.append(new_doc)
-            """
+            for doc in docs:
+                row_doc = Document(page_content=doc.page_content, metadata={"source": path})
+                docs_csv.append(row_doc)
         else:
             docs_all.extend(docs)
 
